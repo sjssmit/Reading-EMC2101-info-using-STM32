@@ -68,7 +68,17 @@ static void MX_I2C2_Init(void);
 
 class EMCdata {
 	
-private:
+	public:
+	// constructor
+	EMCdata(uint8_t EMC2101_ADDR,  uint8_t REG_INT_TEMP,
+	uint8_t REG_EXT_TEMP_HB,  uint8_t REG_EXT_TEMP_LB,
+	uint8_t REG_PROD_ID):EMC2101_ADDR_(EMC2101_ADDR), REG_INT_TEMP_(REG_INT_TEMP), REG_EXT_TEMP_HB_(REG_EXT_TEMP_HB),
+	REG_EXT_TEMP_LB_(REG_EXT_TEMP_LB),REG_PROD_ID_(REG_PROD_ID){}
+
+	// destructor
+	~EMCdata(){}
+
+	// private:
 	HAL_StatusTypeDef ret;
 	char mssg_[10];    // message 
 	uint8_t buf_; 	// buffer for internal temp
@@ -92,14 +102,7 @@ private:
 	uint8_t REG_PROD_ID_;// = FDh;			// register address for Product ID
 
 
-	// constructor
-	EMCdata(uint8_t EMC2101_ADDR,  uint8_t REG_INT_TEMP, 
-	uint8_t REG_EXT_TEMP_HB,  uint8_t REG_EXT_TEMP_LB,
-	uint8_t REG_PROD_ID):EMC2101_ADDR_(EMC2101_ADDR), REG_INT_TEMP_(REG_INT_TEMP), REG_EXT_TEMP_HB_(REG_EXT_TEMP_HB),
-	REG_EXT_TEMP_LB_(REG_EXT_TEMP_LB),REG_PROD_ID_(REG_PROD_ID){}
 
-	// destructor
-	~EMCdata(){}
 
 	// get internal temperature
     void getIntTemp(){
@@ -236,12 +239,14 @@ private:
 
 			std::cout << "Product ID in decimal : " << int(prod_) << std::endl;
 		  }
+		}
 
 
 	}
 	
 	
 };
+
 
 
 
@@ -277,7 +282,7 @@ int main(void) {
 	MX_I2C2_Init();
 	/* USER CODE BEGIN 2 */
 
-	static const uint8_t emc2101_addr = 0x4c; 	// EMC2101 address on SMBus in binary
+	static const uint8_t emc2101_addr = 0x4c<<1; 	// EMC2101 address on SMBus in binary
 	static const uint8_t reg_int_temp = 0x00; 		// register address for Internal temperature
 	static const uint8_t reg_ext_temp_hb = 0x01;		// register address for Ext temperature High byte
 	static const uint8_t reg_ext_temp_lb = 0x10;		// register address for Ext temperature Low byte
